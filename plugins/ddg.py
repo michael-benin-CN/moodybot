@@ -5,7 +5,7 @@ import re
 from urllib import urlencode
 
 import grequests
-from pyaib.plugins import observe, plugin_class
+from pyaib.plugins import keyword, observe, plugin_class
 
 
 def encode_query(q):
@@ -42,8 +42,7 @@ def stringify_result(data, query):
         lines.append(data['Redirect'])
 
     if len(lines) == 0:
-        lines.append('https://duckduckgo.com/?' + urlencode({ "q": query }))
-
+        return None
 
     return '\n'.join(lines)
 
@@ -53,20 +52,32 @@ class DDG(object):
     def __init__(self, ctx, config):
         self.prefix = config.prefix or '!'
         self._bang_re = re.compile('^' + self.prefix + '\w')
-        self._ddg_re = re.compile('^' + self.prefix + 'ddg ')
+        self._ddg_re = re.compile('^' + self.prefix + 'ddg')
+
+    @keyword('ddg')
+    @keyword.autohelp_noargs
+    def ddg_cmd(self, ctx, msg, trigger, args, kargs):
+        '''Adds duckduckgo !bang command support. To see what kinds of commands this enables, run: `!bangs`.'''
+        return msg.reply('https://duckduckgo.com/?' + urlencode({
+            'q': self._ddg_re.sub('', msg.message.strip()).strip()
+        }))
 
     @observe('IRC_MSG_PRIVMSG')
     def ddg(self, ctx, msg):
         message = msg.message.strip()
 
-        # TODO: This shouldn't collide with existing commands.
-        # existing_commands = ctx.triggers.list()
-        # See: https://github.com/facebook/pyaib/blob/master/pyaib/triggers.py#L141-L176
-
+        # TODO: This command collision stuff isn't perfect, and could use a
+        # robust rewrite.
+        # Note: triggers = ctx.triggers.list()
+        # See also: https://github.com/facebook/pyaib/blob/master/pyaib/triggers.py#L141-L176
         if self._bang_re.match(message) is not None:
-            q = self._ddg_re.sub('', message)
-            r = query(q)
-            print(ctx.triggers.list())
-            msg.reply(stringify_result(r, q))
+            if self._ddg_re.match(message) is not None:
+                return
+
+            r = query(message)
+            s = stringify_result(r, message)
+
+            if s is not None:
+                msg.reply(stringify_result(r, message))
 
 
