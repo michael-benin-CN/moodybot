@@ -57,7 +57,7 @@ class DDG(object):
     @keyword('ddg')
     @keyword.autohelp_noargs
     def ddg_cmd(self, ctx, msg, trigger, args, kargs):
-        '''Adds duckduckgo !bang command support. To see what kinds of commands this enables, run: `!bangs`.'''
+        '''![cmd] [query] :: Adds duckduckgo !bang command support. To see what kinds of commands this enables, run: `!bangs`. `!ddg [query]` returns a link to ddg.'''
         return msg.reply('https://duckduckgo.com/?' + urlencode({
             'q': self._ddg_re.sub('', msg.message.strip()).strip()
         }))
