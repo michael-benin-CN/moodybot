@@ -1,0 +1,2 @@
+start:
+	python ./moodybot.py
