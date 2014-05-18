@@ -13,14 +13,14 @@ class PugMe(object):
 
     @keyword('pugme')
     @keyword.autohelp
-    def getPug(self, irc_c, msg, trigger, args, kargs):
+    def get_pug(self, irc_c, msg, trigger, args, kargs):
         """:: You need more small yappy dogs in your life."""
         res = grequests.map([grequests.get('http://pugme.herokuapp.com/random')])[0]
         msg.reply(res.json()['pug'])
 
     @keyword('pugbomb')
     @keyword.autohelp
-    def pugBomb(self, irc_c, msg, trigger, args, kwargs):
+    def pug_bomb(self, irc_c, msg, trigger, args, kwargs):
         """:: You need WAY more small yappy dogs in your life!"""
         res = grequests.map([grequests.get('http://pugme.herokuapp.com/bomb?count=5')])[0]
 
