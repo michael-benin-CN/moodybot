@@ -53,11 +53,12 @@ class DDG(object):
         self.prefix = config.prefix or '!'
         self._bang_re = re.compile('^' + self.prefix + '\w')
         self._ddg_re = re.compile('^' + self.prefix + 'ddg')
+        self._help_re = re.compile('^' + self.prefix + 'help')
 
     @keyword('ddg')
     @keyword.autohelp_noargs
     def ddg_cmd(self, ctx, msg, trigger, args, kargs):
-        '''![cmd] [query] :: Adds duckduckgo !bang command support. To see what kinds of commands this enables, run: `!bangs`. `!ddg [query]` returns a link to ddg.'''
+        '''![cmd] [query] :: Adds duckduckgo !bang command support. To see what kinds of commands this enables, run: `!bangs`. `!ddg [query]` returns a link to ddg. See also: https://dukgo.com/help/'''
         return msg.reply('https://duckduckgo.com/?' + urlencode({
             'q': self._ddg_re.sub('', msg.message.strip()).strip()
         }))
@@ -71,7 +72,7 @@ class DDG(object):
         # Note: triggers = ctx.triggers.list()
         # See also: https://github.com/facebook/pyaib/blob/master/pyaib/triggers.py#L141-L176
         if self._bang_re.match(message) is not None:
-            if self._ddg_re.match(message) is not None:
+            if self._ddg_re.match(message) is not None or self._help_re.match(message) is not None:
                 return
 
             r = query(message)
