@@ -13,7 +13,7 @@ class RedditTailer(object):
         self.latest = None
         self.channels = config.reddit.channels or ctx.channels
 
-    @every(15, 'tail-reddit')
+    @every(15 * 60, 'tail-reddit')
     def tail_reddit(self, ctx, name):
         responses = grequests.map([
             grequests.get('http://www.reddit.com/r/{subreddit}/new.json'.format(subreddit=subreddit))
