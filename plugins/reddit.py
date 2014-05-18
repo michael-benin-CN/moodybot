@@ -52,6 +52,6 @@ class RedditTailer(object):
                     u = post['author']
                     r = post['subreddit']
                     url = post['url']
-                    ctx.PRIVMSG(channel, '⬆ ⬇ {score} {title} submitted by {u} to {r} {url}'.format(
+                    ctx.PRIVMSG(channel, '^v {score} {title} submitted by {u} to {r} {url}'.format(
                         score=score, title=title, u=u, r=r, url=url
                     ))
