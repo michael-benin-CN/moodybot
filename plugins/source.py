@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from pyaib.plugins import keyword, plugin_class
 
 @plugin_class('source')
-class PugMe(object):
+class Sauce(object):
     def __init__(self, irc_context, config):
         pass
 
