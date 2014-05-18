@@ -47,11 +47,10 @@ class RedditTailer(object):
             posts.reverse()
             for channel in self.channels:
                 for post in posts:
-                    score = post['score']
                     title = post['title']
                     u = post['author']
                     r = post['subreddit']
                     url = post['url']
-                    ctx.PRIVMSG(channel, '^v {score} {title} submitted by {u} to {r} {url}'.format(
-                        score=score, title=title, u=u, r=r, url=url
+                    ctx.PRIVMSG(channel, '[reddit] {title} submitted by {u} to {r} {url}'.format(
+                        title=title, u=u, r=r, url=url
                     ))
